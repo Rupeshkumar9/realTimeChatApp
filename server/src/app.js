@@ -10,7 +10,12 @@ import { authenticateRoute } from './middleware/auth.js';
 
 const app = express();
 const httpServer = http.createServer(app);
-const io = new SocketIO(httpServer);
+const io = new SocketIO(httpServer,  {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 initializeSocketIO(io);
 
 // Middleware
@@ -34,7 +39,7 @@ app.get("/", (_req, res) => {
     timestamp: new Date().toISOString(),
     endpoints: {
       health: {
-        GET: ["api/health/"]
+        GET: ["health/"]
       },
       auth: {
         POST: ["api/auth/register", "api/auth/login"]

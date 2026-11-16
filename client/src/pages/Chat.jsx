@@ -21,7 +21,9 @@ function Chat({ onLogout}) {
                 const response = await axios.get('/api/messages', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                setMessages(response.data);
+     
+                const data = response.data
+                setMessages(data);
                
                
             } catch (error) {
@@ -29,8 +31,9 @@ function Chat({ onLogout}) {
             }
         };
 
+        const backendUrl = import.meta.env.VITE_BACKEND_URL || '/';
         if(! socket){
-            const newSocket = io('/', {
+            const newSocket = io(backendUrl, {
                 auth: {
                     token: localStorage.getItem('token')
                 }
