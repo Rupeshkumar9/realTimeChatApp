@@ -22,10 +22,32 @@ app.use(morgan('tiny'));
 
 // Adding message router
 app.use('/api/messages', authenticateRoute, messageRoutes);
-//app.use('/api/messages', messageRoutes);
 
 // Adding auth router
 app.use('/api/auth', authRoutes);
+
+app.get("/", (_req, res) => {
+  res.status(200).json({
+    status: "healthy",
+    message: "realTimeChat API is running",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: {
+        GET: ["api/health/"]
+      },
+      auth: {
+        POST: ["api/auth/register", "api/auth/login"]
+      },
+      messages: {
+        GET: ["api/messages"],
+        POST: ["api/messages"],
+        DELETE: ["api/messages/:id"]
+      }
+    }
+  });
+});
+
 
 app.get('/health', (req, res) => {
     const healthcheck = {
